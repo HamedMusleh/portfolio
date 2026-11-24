@@ -4,7 +4,7 @@
   </div>
 
   <!-- Decorative strip (the accessible version is the table below). -->
-  <div class="marquee" aria-hidden="true">
+  <div class="marquee" aria-hidden="true" [class.paused]="marqueePaused()">
     <div class="track">
       @for (copy of [0, 1]; track copy) {
         <ul>
@@ -17,6 +17,16 @@
   </div>
 
   <div class="container">
+    <button
+      type="button"
+      class="marquee-toggle"
+      [attr.aria-pressed]="marqueePaused()"
+      (click)="toggleMarquee()"
+    >
+      <app-icon [name]="marqueePaused() ? 'play' : 'pause'" />
+      {{ marqueePaused() ? 'Play' : 'Pause' }} ticker
+    </button>
+
     <dl class="sheet">
       @for (group of skills; track group.category) {
         <div class="row" appReveal>

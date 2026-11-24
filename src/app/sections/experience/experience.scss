@@ -28,6 +28,23 @@
     transform-origin: top;
   }
 
+  // The rail draws itself as the timeline scrolls through the viewport, using a
+  // CSS scroll-driven animation (no JS). Unsupported browsers or reduced motion
+  // just show the full line.
+  @supports (animation-timeline: view()) {
+    @include m.motion-ok {
+      // Named on the list itself so the timeline tracks the whole list.
+      view-timeline: --timeline block;
+
+      &::before {
+        background: linear-gradient(var(--accent), var(--line) 85%);
+        animation: draw-rail linear both;
+        animation-timeline: --timeline;
+        animation-range: entry 10% cover 55%;
+      }
+    }
+  }
+
   @include m.up(lg) {
     --date-col: calc((100% - 11 * var(--gap)) / 4 + 2 * var(--gap));
     --rail-x: var(--gap);
@@ -75,6 +92,19 @@
     background: var(--accent);
   }
 
+  // Ring that pulses once when the entry is revealed (RevealDirective adds .is-visible).
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border: 1px solid var(--accent);
+    opacity: 0;
+  }
+
+  .is-visible &::after {
+    animation: pulse 900ms var(--ease-out) 300ms 1;
+  }
+
   // On lg the rail runs along the body's left edge; centre the node on it.
   @include m.up(lg) {
     left: -0.3125rem;
@@ -101,4 +131,21 @@ h3 {
 .description {
   margin-top: var(--space-3);
   color: var(--muted);
+}
+
+@keyframes draw-rail {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3);
+  }
 }

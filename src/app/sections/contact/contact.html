@@ -10,7 +10,7 @@
     <div class="email-block">
       <p class="label" aria-hidden="true">Primary channel</p>
       <a class="email" [href]="'mailto:' + profile.email">{{ profile.email }}</a>
-      <button type="button" class="btn copy" (click)="copyEmail()">
+      <button type="button" class="btn copy" (click)="copyEmail()" appMagnetic>
         <app-icon [name]="copyState() === 'copied' ? 'check' : 'copy'" />
         <!-- Text changes in place; aria-live makes screen readers announce it. -->
         <span aria-live="polite">{{ copyLabel() }}</span>

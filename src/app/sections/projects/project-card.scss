@@ -3,6 +3,8 @@
 :host {
   display: block;
   height: 100%;
+  // TiltDirective writes the transform; this eases it back when the pointer leaves.
+  transition: transform 500ms var(--ease-out);
 }
 
 article {
@@ -20,6 +22,31 @@ article {
   @include m.up(md) {
     padding: var(--space-8);
   }
+
+  // Border spotlight: an accent radial glow at the cursor (--mx/--my from
+  // SpotlightDirective), masked so only the 1px border ring shows it.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    padding: 1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle 180px at var(--mx, 50%) var(--my, 50%),
+      var(--accent),
+      transparent 70%
+    );
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    opacity: 0;
+    transition: opacity 300ms var(--ease-out);
+    pointer-events: none;
+  }
+}
+
+:host(.spotlight-active) article::before {
+  opacity: 1;
 }
 
 // Featured cards: accent crop marks and an accent rule along the top edge.
@@ -141,7 +168,17 @@ footer {
     background: var(--surface-2);
     font-family: var(--font-mono);
     font-size: 0.6875rem;
+    transition:
+      color 250ms var(--ease-out),
+      border-color 250ms var(--ease-out);
+    // Chips shift colour one after another, like a signal passing through.
+    transition-delay: calc(var(--n, 0) * 35ms);
   }
+}
+
+:host(:hover) .tech li {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
 }
 
 .repo {

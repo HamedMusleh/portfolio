@@ -100,3 +100,25 @@
     }
   }
 }
+
+// ---- Filter animation --------------------------------------------------------
+// During a filter View Transition each card gets a unique name (--vt-name, set
+// in the template), so the browser animates it from its old to its new position.
+// Names are only applied during that transition, so other transitions (e.g. the
+// theme reveal) treat the page as one image.
+:host-context(.filter-transition) .bento > li {
+  view-transition-name: var(--vt-name);
+}
+
+// Fallback for browsers without View Transitions: newly shown cards fade in.
+@supports not (view-transition-name: none) {
+  .bento > li {
+    animation: card-in 350ms var(--ease-out) both;
+  }
+
+  @keyframes card-in {
+    from {
+      opacity: 0;
+    }
+  }
+}

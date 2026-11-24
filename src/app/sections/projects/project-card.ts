@@ -1,12 +1,16 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { Project } from '../../data/portfolio.models';
 import { Icon } from '../../shared/icon';
+import { SpotlightDirective } from '../../shared/spotlight.directive';
+import { TiltDirective } from '../../shared/tilt.directive';
 import { CardSpan } from './bento-layout';
 
 @Component({
   selector: 'app-project-card',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [Icon],
+  // Cursor effects on the whole card: border glow follows the pointer + slight 3D tilt.
+  hostDirectives: [SpotlightDirective, TiltDirective],
   templateUrl: './project-card.html',
   styleUrl: './project-card.scss',
   host: {

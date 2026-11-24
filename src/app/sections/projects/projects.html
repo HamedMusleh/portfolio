@@ -31,7 +31,7 @@
 
   <ul class="bento">
     @for (card of cards(); track card.project.id) {
-      <li [class]="'span-' + card.span">
+      <li [class]="'span-' + card.span" [style.--vt-name]="'card-' + card.project.id">
         <app-project-card [project]="card.project" [span]="card.span" />
       </li>
     }

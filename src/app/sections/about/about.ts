@@ -11,7 +11,7 @@ import { SectionHeading } from '../../shared/section-heading';
   template: `
     <section id="about" class="container" aria-labelledby="about-title">
       <app-section-heading index="01" title="About" headingId="about-title" />
-      <div class="layout" appReveal>
+      <div class="layout" appReveal="stagger">
         <div class="bio">
           @for (paragraph of profile.bio; track $index) {
             <p>{{ paragraph }}</p>

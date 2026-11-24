@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TEST_PORTFOLIO } from '../../../testing/portfolio.fixture';
 import { PORTFOLIO_DATA } from '../../data/portfolio.token';
-import { Hero } from './hero';
+import { Hero, splitIntoLetters } from './hero';
 
 describe('Hero', () => {
   async function render(): Promise<HTMLElement> {
@@ -36,5 +36,13 @@ describe('Hero', () => {
     expect(links[1].getAttribute('href')).toBe('assets/test-cv.pdf');
     expect(links[1].hasAttribute('download')).toBe(true);
     expect(links[2].getAttribute('href')).toBe('/#contact');
+  });
+});
+
+describe('splitIntoLetters', () => {
+  it('splits words into letters with a running index across the whole name', () => {
+    const words = splitIntoLetters('Ab  Cd');
+    expect(words.map((w) => w.map((l) => l.char).join(''))).toEqual(['Ab', 'Cd']);
+    expect(words.flat().map((l) => l.index)).toEqual([0, 1, 2, 3]);
   });
 });

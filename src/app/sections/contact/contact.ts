@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { PORTFOLIO_DATA } from '../../data/portfolio.token';
 import { Icon } from '../../shared/icon';
+import { MagneticDirective } from '../../shared/magnetic.directive';
 import { SectionHeading } from '../../shared/section-heading';
 
 type CopyState = 'idle' | 'copied' | 'failed';
@@ -16,7 +17,7 @@ type CopyState = 'idle' | 'copied' | 'failed';
 @Component({
   selector: 'app-contact',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [SectionHeading, Icon],
+  imports: [SectionHeading, Icon, MagneticDirective],
   templateUrl: './contact.html',
   styleUrl: './contact.scss',
 })

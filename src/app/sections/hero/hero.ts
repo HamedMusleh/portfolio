@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PORTFOLIO_DATA } from '../../data/portfolio.token';
 import { Icon } from '../../shared/icon';
+import { MagneticDirective } from '../../shared/magnetic.directive';
+import { SpotlightDirective } from '../../shared/spotlight.directive';
 
 /** Decorative instrument-style details. Not CV content, so they live here, not in the data file. */
 const STATUS_TEXT = 'Available for work';
@@ -11,7 +13,7 @@ const COORDINATES = '31.90°N 35.20°E';
 @Component({
   selector: 'app-hero',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, Icon],
+  imports: [RouterLink, Icon, MagneticDirective, SpotlightDirective],
   templateUrl: './hero.html',
   styleUrl: './hero.scss',
 })

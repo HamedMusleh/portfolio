@@ -11,14 +11,65 @@
   overflow: hidden;
 }
 
-// ---- Background: dot grid, fading out towards the bottom -------------------
+// ---- Background: drifting dot/line grid + cursor spotlight ------------------
+// .grid-bg fades the grid out towards the bottom. Inside it, .dots is taller than
+// the hero by one 96px tile so it can drift down by exactly one tile and loop
+// seamlessly (transform only). Its ::after is the same grid in the accent colour,
+// masked to a circle around the cursor (--mx/--my come from SpotlightDirective).
 .grid-bg {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
-  background-size: 24px 24px;
+  overflow: hidden;
   mask-image: linear-gradient(to bottom, #000 30%, transparent 95%);
+}
+
+.dots {
+  position: absolute;
+  inset: -96px 0 0;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    --grid-color: var(--dot);
+    // Lines are drawn at half the strength of the dots so the grid stays quiet.
+    --grid-line: color-mix(in srgb, var(--grid-color) 50%, transparent);
+    background:
+      radial-gradient(var(--grid-color) 1px, transparent 1.5px) 0 0 / 24px 24px,
+      linear-gradient(to right, var(--grid-line) 1px, transparent 1px) 0 0 / 96px 96px,
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 96px 96px;
+    opacity: 0.6;
+  }
+
+  &::after {
+    --grid-color: var(--accent);
+    opacity: 0;
+    mask-image: radial-gradient(
+      circle 240px at var(--mx, -100vw) calc(var(--my, -100vh) + 96px),
+      #000,
+      transparent
+    );
+    transition: opacity 400ms var(--ease-out);
+  }
+
+  // Cursor effects only exist on mouse/trackpad devices; touch stays static.
+  @include m.fine-pointer {
+    @include m.motion-ok {
+      animation: grid-drift 24s linear infinite;
+    }
+  }
+}
+
+:host .hero.spotlight-active .dots::after {
+  opacity: 1;
+}
+
+@keyframes grid-drift {
+  to {
+    transform: translateY(96px);
+  }
 }
 
 // ---- Layout ----------------------------------------------------------------
@@ -92,8 +143,18 @@ h1 {
   margin-bottom: -0.08em;
 }
 
+// 1) Letter-by-letter reveal: each letter slides up out of its mask, staggered
+// by its index. Pure CSS, so it starts as soon as the prerendered HTML paints.
 .char {
   display: inline-block;
+  animation: char-up 800ms var(--ease-out) both;
+  animation-delay: calc(80ms + var(--i) * 35ms);
+}
+
+@keyframes char-up {
+  from {
+    transform: translateY(105%);
+  }
 }
 
 // ---- Intro column ----------------------------------------------------------
@@ -117,9 +178,55 @@ h1 {
   color: var(--muted);
 }
 
-.typed {
+// 2) Typing effect, after the name. The text is uncovered one character per
+// step with clip-path; the cursor jumps 1ch per step in sync (monospace means
+// every character is exactly 1ch wide), then blinks.
+.typewriter {
+  --type-delay: 900ms;
+  --type-duration: calc(var(--chars) * 45ms);
   position: relative;
   white-space: nowrap;
+}
+
+.typed {
+  display: inline-block;
+  animation: type var(--type-duration) steps(var(--chars), end) var(--type-delay) both;
+}
+
+.cursor {
+  position: absolute;
+  top: 0.15em;
+  left: 0;
+  width: 0.6ch;
+  height: 1.1em;
+  background: var(--accent);
+  animation:
+    cursor-move var(--type-duration) steps(var(--chars), end) var(--type-delay) both,
+    blink 1s step-end calc(var(--type-delay) + var(--type-duration)) infinite;
+}
+
+@keyframes type {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes cursor-move {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(var(--chars) * 1ch));
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 .pitch {

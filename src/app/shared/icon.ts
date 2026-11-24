@@ -12,7 +12,9 @@ export type IconName =
   | 'menu'
   | 'close'
   | 'copy'
-  | 'check';
+  | 'check'
+  | 'pause'
+  | 'play';
 
 /**
  * Inline SVG icons (no icon font, no extra request).
@@ -88,6 +90,12 @@ export type IconName =
         }
         @case ('check') {
           <path d="M20 6 9 17l-5-5" />
+        }
+        @case ('pause') {
+          <path d="M8 5v14M16 5v14" />
+        }
+        @case ('play') {
+          <path d="m7 4 13 8-13 8z" />
         }
       }
     </svg>

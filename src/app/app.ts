@@ -2,15 +2,17 @@ import { ChangeDetectionStrategy, Component, ElementRef, viewChild } from '@angu
 import { RouterOutlet } from '@angular/router';
 import { Footer } from './layout/footer/footer';
 import { Header } from './layout/header/header';
+import { ScrollProgress } from './layout/scroll-progress/scroll-progress';
 
 @Component({
   selector: 'app-root',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer, ScrollProgress],
   styleUrl: './app.scss',
   template: `
     <!-- First focusable element: lets keyboard users jump past the navigation. -->
     <a class="skip-link" href="#main" (click)="skipToMain($event)">Skip to main content</a>
+    <app-scroll-progress />
     <app-header />
     <main id="main" tabindex="-1" #main>
       <router-outlet />

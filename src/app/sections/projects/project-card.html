@@ -23,7 +23,7 @@
     <footer>
       <ul class="tech" aria-label="Technologies">
         @for (tech of project().tech; track tech) {
-          <li>{{ tech }}</li>
+          <li [style.--n]="$index">{{ tech }}</li>
         }
       </ul>
       @if (project().repoUrl; as repoUrl) {

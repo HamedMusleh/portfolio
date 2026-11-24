@@ -1,0 +1,56 @@
+@use 'mixins' as m;
+
+// Global motion rules. Component-specific animations live with their components;
+// everything here is shared or targets document-level pseudo-elements.
+
+// ---- Section reveals (RevealDirective) ---------------------------------------
+// Classes are only added from JS, so no-JS and reduced-motion users see everything.
+// The wipe uncovers the element from top to bottom while it fades in.
+.reveal,
+.reveal-stagger > * {
+  clip-path: inset(0 0 100% 0);
+  opacity: 0;
+  transition:
+    clip-path 900ms var(--ease-out),
+    opacity 600ms var(--ease-out);
+}
+
+.reveal-stagger > * {
+  transition-delay: calc(var(--reveal-i, 0) * 90ms);
+}
+
+.reveal.is-visible,
+.reveal-stagger.is-visible > * {
+  clip-path: inset(-1rem); // negative so crop marks just outside the box stay visible
+  opacity: 1;
+}
+
+// ---- View Transitions ------------------------------------------------------
+// Project filter: cards with a view-transition-name glide to their new spot.
+::view-transition-group(*) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+// Theme switch: no cross-fade; the new theme is revealed by a growing circle
+// (clip-path animated from ThemeToggle with the Web Animations API).
+html.theme-transition::view-transition-old(root),
+html.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+// ---- Reduced motion --------------------------------------------------------
+// Global safety net: users who ask for reduced motion get (almost) none.
+// Individual components additionally switch infinite animations off entirely.
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+}

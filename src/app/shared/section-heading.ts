@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { RevealDirective } from './reveal.directive';
 
 /**
  * Consistent heading for every section: a mono label ("01 / ABOUT") in the left
@@ -9,6 +10,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 @Component({
   selector: 'app-section-heading',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // Every section heading wipes in when it scrolls into view.
+  hostDirectives: [RevealDirective],
   styleUrl: './section-heading.scss',
   template: `
     <p class="label" aria-hidden="true">

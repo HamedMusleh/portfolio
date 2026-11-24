@@ -1,6 +1,6 @@
-<section id="top" class="hero" aria-labelledby="hero-title">
-  <!-- Decorative dot grid behind the hero. -->
-  <div class="grid-bg" aria-hidden="true"></div>
+<section id="top" class="hero" aria-labelledby="hero-title" appSpotlight>
+  <!-- Decorative dot grid behind the hero; the accent layer lights up around the cursor. -->
+  <div class="grid-bg" aria-hidden="true"><div class="dots"></div></div>
 
   <div class="container layout">
     <div class="meta">
@@ -29,20 +29,23 @@
     <div class="intro">
       <p class="title">
         <span class="prompt" aria-hidden="true">&gt;</span>
-        <span class="typed" [style.--chars]="profile.title.length">{{ profile.title }}</span>
+        <span class="typewriter" [style.--chars]="profile.title.length">
+          <span class="typed">{{ profile.title }}</span>
+          <span class="cursor" aria-hidden="true"></span>
+        </span>
       </p>
       <p class="pitch">{{ profile.pitch }}</p>
 
       <div class="actions">
-        <a class="btn btn--primary" routerLink="/" fragment="projects">
+        <a class="btn btn--primary" routerLink="/" fragment="projects" appMagnetic>
           View projects
           <app-icon name="arrow-right" />
         </a>
-        <a class="btn" [href]="profile.cvPath" download>
+        <a class="btn" [href]="profile.cvPath" download appMagnetic>
           <app-icon name="download" />
           Download CV <span class="visually-hidden">(PDF)</span>
         </a>
-        <a class="btn" routerLink="/" fragment="contact">Contact</a>
+        <a class="btn" routerLink="/" fragment="contact" appMagnetic>Contact</a>
       </div>
     </div>
 

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { MagneticDirective } from '../../shared/magnetic.directive';
 
 @Component({
   selector: 'app-not-found',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink],
+  imports: [RouterLink, MagneticDirective],
   styles: `
     :host {
       display: block;
@@ -30,7 +31,7 @@ import { RouterLink } from '@angular/router';
       <p class="code">ERR 404 � ROUTE NOT FOUND</p>
       <h1>Page not found</h1>
       <p>The page you're looking for doesn't exist or has moved.</p>
-      <a class="btn btn--primary" routerLink="/">Back to the homepage</a>
+      <a class="btn btn--primary" routerLink="/" appMagnetic>Back to the homepage</a>
     </div>
   `,
 })
