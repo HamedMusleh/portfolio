@@ -1,0 +1,80 @@
+// Design tokens exposed as CSS custom properties.
+// Colours are swapped per theme; everything else (spacing, type, radii) is shared.
+// Contrast notes (WCAG AA, 4.5:1 for body text): every text/background pair below
+// was checked; the lowest is --color-accent on --color-bg in light mode (~5:1).
+
+@mixin light-theme {
+  color-scheme: light;
+  --color-bg: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-surface-2: #efece4;
+  --color-text: #1b1b18;
+  --color-text-muted: #55554d;
+  --color-border: #d9d5c9;
+  --color-grid: rgb(27 27 24 / 6%);
+  --color-accent: #b93c0a;
+  --color-accent-strong: #9a3208;
+  --color-on-accent: #ffffff;
+  --color-accent-soft: rgb(185 60 10 / 10%);
+  --shadow-card: 0 1px 2px rgb(27 27 24 / 6%), 0 8px 24px -12px rgb(27 27 24 / 18%);
+}
+
+@mixin dark-theme {
+  color-scheme: dark;
+  --color-bg: #121311;
+  --color-surface: #1a1b19;
+  --color-surface-2: #22231f;
+  --color-text: #ecebe6;
+  --color-text-muted: #a6a59c;
+  --color-border: #34352f;
+  --color-grid: rgb(236 235 230 / 5%);
+  --color-accent: #fb923c;
+  --color-accent-strong: #fdba74;
+  --color-on-accent: #121311;
+  --color-accent-soft: rgb(251 146 60 / 12%);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 60%);
+}
+
+:root {
+  @include light-theme;
+
+  --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+
+  // Fluid type scale: grows smoothly between 375px and 1280px viewports.
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+  --text-hero: clamp(2.5rem, 1.6rem + 4.4vw, 5rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-section: clamp(4rem, 3rem + 5vw, 7.5rem);
+
+  --radius-sm: 4px;
+  --radius-md: 10px;
+  --container: 72rem;
+  --header-height: 4rem;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+// Explicit choice made with the toggle (or restored from localStorage).
+:root[data-theme='dark'] {
+  @include dark-theme;
+}
+
+// Fallback when JavaScript is off: follow the OS setting.
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include dark-theme;
+  }
+}

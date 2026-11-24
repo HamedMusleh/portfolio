@@ -1,0 +1,30 @@
+<div class="container bar">
+  <a class="brand" routerLink="/" fragment="top" (click)="closeMenu()">
+    <span class="brand-mark" aria-hidden="true">HM</span>
+    <span class="brand-name">{{ name }}</span>
+  </a>
+
+  <nav aria-label="Primary">
+    <!-- Visible only on small screens; the list is always visible on md+. -->
+    <button
+      type="button"
+      class="icon-button menu-button"
+      aria-controls="primary-nav"
+      [attr.aria-expanded]="menuOpen()"
+      (click)="toggleMenu()"
+    >
+      <app-icon [name]="menuOpen() ? 'close' : 'menu'" />
+      <span class="visually-hidden">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+    </button>
+
+    <ul id="primary-nav" class="links" [class.open]="menuOpen()">
+      @for (link of links; track link.id) {
+        <li>
+          <a routerLink="/" [fragment]="link.id" (click)="closeMenu()">{{ link.label }}</a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <app-theme-toggle />
+</div>

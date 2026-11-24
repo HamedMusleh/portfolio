@@ -1,0 +1,37 @@
+<article [attr.aria-labelledby]="titleId()">
+  <header>
+    <div class="meta">
+      @if (project().featured) {
+        <span class="badge">Featured</span>
+      }
+      <span class="context">{{ project().context }}</span>
+      @if (project().period; as period) {
+        <span class="period">{{ period }}</span>
+      }
+    </div>
+    <h3 [id]="titleId()">{{ project().title }}</h3>
+  </header>
+
+  <p class="summary">{{ project().summary }}</p>
+
+  <ul class="highlights">
+    @for (item of project().highlights; track $index) {
+      <li>{{ item }}</li>
+    }
+  </ul>
+
+  <footer>
+    <ul class="tech" aria-label="Technologies">
+      @for (tech of project().tech; track tech) {
+        <li>{{ tech }}</li>
+      }
+    </ul>
+    @if (project().repoUrl; as repoUrl) {
+      <a class="repo" [href]="repoUrl" target="_blank" rel="noopener">
+        <app-icon name="github" />
+        Source code
+        <span class="visually-hidden">for {{ project().title }} (opens in a new tab)</span>
+      </a>
+    }
+  </footer>
+</article>

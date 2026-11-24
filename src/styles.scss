@@ -1,0 +1,4 @@
+// Global styles only: tokens, reset/base and a few shared utilities.
+// Everything component-specific lives next to its component.
+@use 'styles/tokens';
+@use 'styles/base';

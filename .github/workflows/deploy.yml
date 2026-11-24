@@ -1,0 +1,60 @@
+name: CI / Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Only one deployment at a time; a newer push cancels an in-progress one.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm run test:ci
+
+      # The "Download CV" buttons point at this file; never deploy without it.
+      - name: Check CV is present
+        run: test -f public/assets/Hamed_Musleh_CV.pdf
+
+      - name: Build (base-href /portfolio/ + 404 fallback)
+        run: npm run build:gh
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/portfolio/browser
+
+  deploy:
+    # Pull requests are checked by the build job but never deployed.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

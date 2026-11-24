@@ -1,0 +1,118 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+}
+
+.hero {
+  position: relative;
+  isolation: isolate; // keeps the z-index:-1 grid inside this section
+  padding-block: var(--space-16) 0;
+  overflow: hidden;
+
+  // Blueprint grid, faded out towards the bottom. Purely decorative CSS.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      linear-gradient(var(--color-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  }
+
+  @include m.up(md) {
+    padding-top: calc(var(--space-16) * 2);
+  }
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-12);
+
+  @include m.up(lg) {
+    grid-template-columns: 1fr minmax(18rem, 22rem);
+    align-items: end;
+  }
+}
+
+.eyebrow {
+  @include m.mono-label;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  color: var(--color-accent);
+
+  &::before {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+h1 {
+  font-size: var(--text-hero);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  animation: rise 700ms var(--ease-out) both;
+}
+
+.pitch {
+  max-width: 38ch;
+  margin-top: var(--space-6);
+  color: var(--color-text-muted);
+  font-size: var(--text-xl);
+  line-height: 1.4;
+  animation: rise 700ms 80ms var(--ease-out) both;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  animation: rise 700ms 160ms var(--ease-out) both;
+}
+
+.spec {
+  margin: 0;
+  padding: var(--space-4) var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+
+  & + & {
+    border-top: 1px dashed var(--color-border);
+  }
+}
+
+dt {
+  color: var(--color-text-muted);
+}
+
+dd {
+  margin: 0;
+}
+
+// Transform-only entrance: cheap, no layout shift, and the text is never
+// invisible (fading from opacity 0 would delay Largest Contentful Paint).
+// The global reduced-motion rule shortens this to ~0ms.
+@keyframes rise {
+  from {
+    transform: translateY(12px);
+  }
+}

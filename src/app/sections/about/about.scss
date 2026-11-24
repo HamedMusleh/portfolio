@@ -1,0 +1,55 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+  padding-block: var(--space-section) 0;
+}
+
+.layout {
+  display: grid;
+  gap: var(--space-8);
+
+  @include m.up(lg) {
+    grid-template-columns: 1fr 20rem;
+    gap: var(--space-16);
+  }
+}
+
+.bio {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 65ch;
+  font-size: var(--text-lg);
+
+  // The first paragraph reads as a lead-in.
+  p:first-child {
+    font-size: var(--text-xl);
+    line-height: 1.45;
+  }
+}
+
+.education {
+  align-self: start;
+  padding-left: var(--space-6);
+  border-left: 2px solid var(--color-accent);
+}
+
+.label {
+  @include m.mono-label;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-muted);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.degree {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.period {
+  @include m.mono-label;
+  margin-top: var(--space-2);
+  color: var(--color-accent);
+}

@@ -1,0 +1,85 @@
+@use 'mixins' as m;
+
+:host {
+  display: block;
+  padding-block: var(--space-section);
+}
+
+.email-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4) var(--space-6);
+  margin-bottom: var(--space-12);
+}
+
+.email {
+  font-family: var(--font-display);
+  // Sized so the full address fits on one line even at 375px.
+  font-size: clamp(1.25rem, 0.9rem + 2.4vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  // Long addresses must wrap on a 375px screen instead of overflowing.
+  overflow-wrap: anywhere;
+
+  &:hover {
+    color: var(--color-accent);
+  }
+}
+
+.copy {
+  min-width: 9.5rem; // stops the button resizing when the label changes
+}
+
+.links {
+  display: grid;
+  gap: var(--space-4);
+  list-style: none;
+
+  @include m.up(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    height: 100%;
+    padding: var(--space-4) var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    font-size: 1.5rem; // sizes the icon (1em)
+    text-decoration: none;
+    transition:
+      border-color 160ms var(--ease-out),
+      transform 160ms var(--ease-out);
+
+    &:hover {
+      border-color: var(--color-accent);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+.link-text {
+  display: grid;
+  min-width: 0;
+}
+
+.link-label {
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.link-value {
+  @include m.mono-label;
+  overflow: hidden;
+  color: var(--color-text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

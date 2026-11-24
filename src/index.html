@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Hamed Musleh · AI-Native Full-Stack Engineer</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Portfolio of Hamed Musleh, Computer Engineering student at Birzeit University building AI-powered software, from NLP pipelines to the interfaces people use."
+    />
+    <meta name="author" content="Hamed Musleh" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121311" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://hamedmusleh.github.io/portfolio/" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Open Graph / social previews. Crawlers need absolute URLs here. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Hamed Musleh" />
+    <meta property="og:title" content="Hamed Musleh · AI-Native Full-Stack Engineer" />
+    <meta
+      property="og:description"
+      content="Computer Engineering student building AI-powered software, from NLP pipelines to the interfaces people use."
+    />
+    <meta property="og:url" content="https://hamedmusleh.github.io/portfolio/" />
+    <meta property="og:image" content="https://hamedmusleh.github.io/portfolio/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Hamed Musleh, AI-Native Full-Stack Engineer" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!--
+      Apply the saved/OS theme before the first paint to avoid a light→dark flash.
+      This must run before Angular boots, so it is a tiny inline script.
+      ThemeService reads the same localStorage key afterwards.
+    -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var dark = saved
+            ? saved === 'dark'
+            : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <app-root></app-root>
+    <noscript>
+      <p style="padding: 1rem">
+        This site needs JavaScript. You can reach Hamed at
+        <a href="mailto:hamed4.musleh@gmail.com">hamed4.musleh@gmail.com</a>.
+      </p>
+    </noscript>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+@use 'mixins' as m;
+
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: block;
+  border-bottom: 1px solid var(--color-border);
+  // Translucent bar: content scrolls visibly underneath.
+  background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--header-height);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-right: auto;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+}
+
+// On mobile the name is visually hidden (not display:none) so the link keeps
+// an accessible name; the "HM" mark is aria-hidden.
+.brand-name {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+
+  @include m.up(md) {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: border-color 160ms var(--ease-out);
+
+  &:hover {
+    border-color: var(--color-border);
+  }
+}
+
+.menu-button {
+  @include m.up(md) {
+    display: none;
+  }
+}
+
+// Mobile: a dropdown panel under the header, hidden until the button opens it.
+.links {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  display: none;
+  flex-direction: column;
+  padding: var(--space-2) var(--space-6) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+  list-style: none;
+
+  &.open {
+    display: flex;
+  }
+
+  a {
+    display: block;
+    padding: var(--space-3) 0;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 160ms var(--ease-out);
+
+    &:hover {
+      color: var(--color-accent);
+    }
+  }
+
+  // Desktop: an inline row, always visible regardless of the menu state.
+  @include m.up(md) {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-6);
+    padding: 0;
+    margin-right: var(--space-4);
+    border: 0;
+    background: none;
+
+    a {
+      padding: var(--space-2) 0;
+      font-size: var(--text-sm);
+    }
+  }
+}

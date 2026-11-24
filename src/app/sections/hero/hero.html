@@ -1,0 +1,39 @@
+<section id="top" class="hero" aria-labelledby="hero-title">
+  <div class="container layout">
+    <div class="intro">
+      <p class="eyebrow">{{ profile.title }}</p>
+      <h1 id="hero-title">{{ profile.name }}</h1>
+      <p class="pitch">{{ profile.pitch }}</p>
+
+      <div class="actions">
+        <a class="btn btn--primary" routerLink="/" fragment="projects">
+          View projects
+          <app-icon name="arrow-right" />
+        </a>
+        <a class="btn" [href]="profile.cvPath" download>
+          <app-icon name="download" />
+          Download CV <span class="visually-hidden">(PDF)</span>
+        </a>
+        <a class="btn" routerLink="/" fragment="contact">Contact</a>
+      </div>
+    </div>
+
+    <!-- A small "spec sheet": quick facts in a mono, engineering-notebook style. -->
+    <dl class="spec" aria-label="Quick facts">
+      <div class="row">
+        <dt>Based in</dt>
+        <dd>{{ profile.location }}</dd>
+      </div>
+      <div class="row">
+        <dt>Studying</dt>
+        <dd>{{ profile.education.degree }}, {{ profile.education.period }}</dd>
+      </div>
+      @if (latestRole) {
+        <div class="row">
+          <dt>Latest</dt>
+          <dd>{{ latestRole.title }} · {{ latestRole.organization }}</dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>
