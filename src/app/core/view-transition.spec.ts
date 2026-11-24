@@ -1,10 +1,11 @@
 import { mockMedia } from '../../testing/media';
+import { stubProperty } from '../../testing/stub';
 import { runViewTransition } from './view-transition';
 
 describe('runViewTransition', () => {
+  // jsdom has no View Transitions API; fakes are installed with stubProperty and
+  // removed automatically after each test (see src/test-setup.ts).
   afterEach(() => {
-    // jsdom has no View Transitions API; remove any fake a test installed.
-    delete (document as Partial<Document>).startViewTransition;
     document.documentElement.className = '';
   });
 
@@ -21,10 +22,14 @@ describe('runViewTransition', () => {
     let finish!: () => void;
     const finished = new Promise<void>((resolve) => (finish = resolve));
     const fake = { finished, ready: Promise.resolve() } as unknown as ViewTransition;
-    document.startViewTransition = vi.fn((update?: unknown) => {
-      (update as () => void)();
-      return fake;
-    }) as unknown as Document['startViewTransition'];
+    stubProperty(
+      document,
+      'startViewTransition',
+      vi.fn((update?: unknown) => {
+        (update as () => void)();
+        return fake;
+      }),
+    );
     const update = vi.fn();
 
     const result = runViewTransition(document, update, 'theme-transition');
@@ -41,7 +46,7 @@ describe('runViewTransition', () => {
 
   it('skips the animation for users who prefer reduced motion', () => {
     mockMedia({ reducedMotion: true });
-    document.startViewTransition = vi.fn() as unknown as Document['startViewTransition'];
+    stubProperty(document, 'startViewTransition', vi.fn());
     const update = vi.fn();
 
     expect(runViewTransition(document, update)).toBeNull();

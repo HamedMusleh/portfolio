@@ -1,27 +1,34 @@
+import { stubProperty } from './stub';
+
 /**
  * jsdom has no matchMedia. This installs a fake that answers the media queries
  * the motion helpers ask about, so tests can simulate a mouse user, a touch
- * user, or someone who prefers reduced motion.
+ * user, or someone who prefers reduced motion. Restored after each test.
  */
 export function mockMedia({ finePointer = true, reducedMotion = false } = {}): void {
-  window.matchMedia = ((query: string) => ({
+  stubProperty(window, 'matchMedia', (query: string) => ({
     matches:
       (query.includes('pointer: fine') && finePointer) ||
       (query.includes('prefers-reduced-motion: reduce') && reducedMotion),
     media: query,
     addEventListener: () => undefined,
     removeEventListener: () => undefined,
-  })) as unknown as typeof window.matchMedia;
+  }));
 }
 
-/** Runs requestAnimationFrame callbacks immediately, so pointer effects apply synchronously. */
+/**
+ * Runs requestAnimationFrame callbacks immediately, so pointer effects apply
+ * synchronously. Restored after each test. It must be: Angular's zoneless
+ * scheduler also uses rAF, and a synchronous rAF leaking into other specs makes
+ * change detection run in the middle of a signal write.
+ */
 export function mockAnimationFrame(): void {
-  window.requestAnimationFrame = (callback: FrameRequestCallback) => {
+  stubProperty(window, 'requestAnimationFrame', (callback: FrameRequestCallback) => {
     callback(0);
     // 0 = "no frame pending": the callback already ran, so callers may schedule again.
     return 0;
-  };
-  window.cancelAnimationFrame = () => undefined;
+  });
+  stubProperty(window, 'cancelAnimationFrame', () => undefined);
 }
 
 /** jsdom has no PointerEvent constructor; the effects only read clientX/clientY. */

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { stubProperty } from '../../testing/stub';
 import { THEME_STORAGE_KEY, ThemeService } from './theme.service';
 
 type ChangeListener = (event: MediaQueryListEvent) => void;
@@ -6,11 +7,15 @@ type ChangeListener = (event: MediaQueryListEvent) => void;
 /** jsdom has no matchMedia, so tests install a controllable fake. */
 function mockSystemDarkMode(matches: boolean) {
   const listeners: ChangeListener[] = [];
-  window.matchMedia = vi.fn().mockReturnValue({
-    matches,
-    addEventListener: (_type: string, fn: ChangeListener) => listeners.push(fn),
-    removeEventListener: vi.fn(),
-  });
+  stubProperty(
+    window,
+    'matchMedia',
+    vi.fn().mockReturnValue({
+      matches,
+      addEventListener: (_type: string, fn: ChangeListener) => listeners.push(fn),
+      removeEventListener: vi.fn(),
+    }),
+  );
   return {
     emitChange: (dark: boolean) =>
       listeners.forEach((fn) => fn({ matches: dark } as MediaQueryListEvent)),

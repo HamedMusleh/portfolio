@@ -1,17 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { mockAnimationFrame } from '../../../testing/media';
+import { stubProperty } from '../../../testing/stub';
 import { ScrollProgress } from './scroll-progress';
 
 describe('ScrollProgress', () => {
   const root = document.documentElement;
 
-  afterEach(() => vi.restoreAllMocks());
-
   beforeEach(() => {
     mockAnimationFrame();
     // jsdom does no layout: fake a page that can scroll 1000px.
-    Object.defineProperty(root, 'scrollHeight', { value: 1800, configurable: true });
-    Object.defineProperty(root, 'clientHeight', { value: 800, configurable: true });
+    stubProperty(root, 'scrollHeight', 1800);
+    stubProperty(root, 'clientHeight', 800);
   });
 
   it('is hidden from assistive technology', async () => {
@@ -37,7 +36,7 @@ describe('ScrollProgress', () => {
     await fixture.whenStable();
     const bar: HTMLElement = fixture.nativeElement.querySelector('.bar');
 
-    Object.defineProperty(window, 'scrollY', { value: 250, configurable: true });
+    stubProperty(window, 'scrollY', 250);
     window.dispatchEvent(new Event('scroll'));
 
     expect(bar.style.transform).toBe('scaleX(0.25)');

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TEST_PORTFOLIO } from '../../../testing/portfolio.fixture';
 import { PORTFOLIO_DATA } from '../../data/portfolio.token';
+import { stubProperty } from '../../../testing/stub';
 import { Contact } from './contact';
 
 describe('Contact', () => {
@@ -15,7 +16,7 @@ describe('Contact', () => {
 
   /** Installs a fake (or missing) Clipboard API, then renders the component. */
   async function render(clipboard?: Pick<Clipboard, 'writeText'>): Promise<void> {
-    Object.defineProperty(navigator, 'clipboard', { value: clipboard, configurable: true });
+    stubProperty(navigator, 'clipboard', clipboard);
     TestBed.configureTestingModule({
       imports: [Contact],
       providers: [{ provide: PORTFOLIO_DATA, useValue: TEST_PORTFOLIO }],

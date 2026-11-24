@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { mockMedia, stubRect } from '../../testing/media';
+import { stubProperty } from '../../testing/stub';
 import { RevealDirective } from './reveal.directive';
 
 @Component({
@@ -35,7 +36,7 @@ class FakeObserver {
 describe('RevealDirective', () => {
   beforeEach(() => {
     FakeObserver.instances = [];
-    (window as unknown as Record<string, unknown>)['IntersectionObserver'] = FakeObserver;
+    stubProperty(window, 'IntersectionObserver', FakeObserver);
   });
 
   /** Renders the host with both elements placed below the fold (or not). */
