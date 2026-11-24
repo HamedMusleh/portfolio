@@ -2,43 +2,87 @@
 
 :host {
   display: block;
-  padding-block: var(--space-section) 0;
+  padding-top: var(--space-section);
 }
 
-// Auto-fill grid: as many ~15rem columns as fit, with no breakpoints needed.
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
-  gap: var(--space-4);
+// ---- Marquee strip -----------------------------------------------------------
+.marquee {
+  margin-bottom: var(--space-12);
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  background: var(--surface);
 }
 
-.group {
-  padding: var(--space-6);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-}
-
-h3 {
-  @include m.mono-label;
-  margin-bottom: var(--space-4);
-  color: var(--color-accent);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-ul {
+// Two identical copies side by side: shifting the track by exactly -50%
+// lines copy 2 up where copy 1 started, so the loop is seamless.
+.track {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+  width: max-content;
+}
+
+.marquee ul {
+  display: flex;
   list-style: none;
 }
 
-li {
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-sm);
-  background: var(--color-surface-2);
+.marquee li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-4) 0 var(--space-4) var(--space-6);
+  font-family: var(--font-mono);
   font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+
+  &::after {
+    content: '/';
+    color: var(--accent);
+  }
+}
+
+// ---- Spec sheet ------------------------------------------------------------
+.sheet {
+  margin: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  @include m.section-grid;
+  gap: var(--space-3);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+dt {
+  @include m.mono-label;
+  padding-top: 0.35rem;
+  color: var(--accent);
+
+  @include m.up(lg) {
+    grid-column: 1 / span 3;
+  }
+}
+
+dd {
+  margin: 0;
+
+  @include m.up(lg) {
+    grid-column: 4 / -1;
+  }
+}
+
+dd ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-6);
+  list-style: none;
+}
+
+dd li {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
   font-weight: 500;
+  letter-spacing: -0.01em;
 }

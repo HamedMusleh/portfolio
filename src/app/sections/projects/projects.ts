@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { PORTFOLIO_DATA } from '../../data/portfolio.token';
 import { SectionHeading } from '../../shared/section-heading';
+import { bentoLayout } from './bento-layout';
 import { ProjectCard } from './project-card';
 import {
   ALL,
@@ -30,6 +31,9 @@ export class Projects {
   protected readonly visibleProjects = computed(() =>
     filterProjects(this.projects, this.selected()),
   );
+
+  /** The visible projects with a bento card size for each (see bento-layout.ts). */
+  protected readonly cards = computed(() => bentoLayout(this.visibleProjects()));
 
   /** Read out by the aria-live region so screen-reader users hear the result. */
   protected readonly resultMessage = computed(() => {

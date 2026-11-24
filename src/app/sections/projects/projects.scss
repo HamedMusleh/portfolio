@@ -2,14 +2,24 @@
 
 :host {
   display: block;
-  padding-block: var(--space-section) 0;
+  padding-top: var(--space-section);
 }
 
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+// Segmented control: square, hairline-bordered mono buttons.
+// Negative margins collapse the shared borders, even when the row wraps.
 .filters {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: var(--space-8);
+  padding: 1px 0 0 1px;
 }
 
 .filter {
@@ -17,59 +27,76 @@
   align-items: center;
   gap: var(--space-2);
   min-height: 2.75rem;
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  background: var(--color-surface);
-  font-size: var(--text-sm);
-  font-weight: 500;
+  margin: -1px 0 0 -1px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--bg);
+  @include m.mono-label;
   cursor: pointer;
-  transition:
-    background-color 160ms var(--ease-out),
-    border-color 160ms var(--ease-out),
-    color 160ms var(--ease-out);
 
   &:hover:not(:disabled) {
-    border-color: var(--color-text);
+    color: var(--accent);
   }
 
   // Selected state is styled from the ARIA attribute itself, so the visual
   // state and what screen readers announce can never get out of sync.
   &[aria-pressed='true'] {
-    border-color: var(--color-text);
-    background: var(--color-text);
-    color: var(--color-bg);
+    position: relative; // lifts its border above neighbours
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  &:focus-visible {
+    position: relative;
+    z-index: 1;
   }
 
   &:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    color: var(--muted);
+    text-decoration: line-through;
   }
 }
 
 .count {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
+  opacity: 0.8;
 }
 
-.grid {
+.result {
+  @include m.mono-label;
+  color: var(--muted);
+}
+
+// Bento grid: 1 column → 2 (md) → 3 (lg). Card widths come from bento-layout.ts.
+.bento {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-4);
   list-style: none;
 
   @include m.up(md) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    .span-2,
+    .span-3 {
+      grid-column: 1 / -1;
+    }
   }
 
-  // Cards ease in when the filter changes (shortened to ~0 by reduced-motion).
-  li {
-    animation: card-in 320ms var(--ease-out) both;
-  }
-}
+  @include m.up(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
 
-@keyframes card-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
+    .span-1 {
+      grid-column: span 1;
+    }
+    .span-2 {
+      grid-column: span 2;
+    }
+    .span-3 {
+      grid-column: 1 / -1;
+    }
   }
 }

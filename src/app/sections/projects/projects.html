@@ -1,33 +1,39 @@
 <section id="projects" class="container" aria-labelledby="projects-title">
   <app-section-heading
     index="02"
+    label="Projects"
     title="Featured Projects"
     headingId="projects-title"
     intro="Selected work across AI, full-stack, mobile and hardware. Filter by area:"
   />
 
-  <!-- Toggle buttons with aria-pressed: simpler and more robust than a tablist here,
-       because the filter narrows one list rather than switching between panels. -->
-  <div class="filters" role="group" aria-label="Filter projects by area">
-    @for (option of filterOptions; track option) {
-      <button
-        type="button"
-        class="filter"
-        [attr.aria-pressed]="selected() === option"
-        [disabled]="counts[option] === 0"
-        (click)="select(option)"
-      >
-        {{ option }}
-        <span class="count" aria-hidden="true">{{ counts[option] }}</span>
-      </button>
-    }
+  <div class="toolbar">
+    <!-- Toggle buttons with aria-pressed: simpler and more robust than a tablist here,
+         because the filter narrows one list rather than switching between panels. -->
+    <div class="filters" role="group" aria-label="Filter projects by area">
+      @for (option of filterOptions; track option) {
+        <button
+          type="button"
+          class="filter"
+          [attr.aria-pressed]="selected() === option"
+          [disabled]="counts[option] === 0"
+          (click)="select(option)"
+        >
+          {{ option }}
+          <span class="count" aria-hidden="true">{{ counts[option] }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Visible readout that doubles as the screen-reader announcement. -->
+    <p class="result" aria-live="polite">{{ resultMessage() }}</p>
   </div>
 
-  <p class="visually-hidden" aria-live="polite">{{ resultMessage() }}</p>
-
-  <ul class="grid">
-    @for (project of visibleProjects(); track project.id) {
-      <li><app-project-card [project]="project" /></li>
+  <ul class="bento">
+    @for (card of cards(); track card.project.id) {
+      <li [class]="'span-' + card.span">
+        <app-project-card [project]="card.project" [span]="card.span" />
+      </li>
     }
   </ul>
 </section>

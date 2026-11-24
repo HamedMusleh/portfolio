@@ -20,15 +20,15 @@ import { Icon } from '../../shared/icon';
       place-items: center;
       width: 2.75rem;
       height: 2.75rem;
-      border: 1px solid transparent;
-      border-radius: var(--radius-sm);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
       background: transparent;
-      font-size: 1.25rem;
+      font-size: 1.125rem;
       cursor: pointer;
-      transition: border-color 160ms var(--ease-out);
     }
     button:hover {
-      border-color: var(--color-border);
+      border-color: var(--accent);
+      color: var(--accent);
     }
   `,
   template: `

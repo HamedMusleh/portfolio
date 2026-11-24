@@ -23,7 +23,7 @@ const DARK_QUERY = '(prefers-color-scheme: dark)';
  * logic before Angular boots, so there is no flash on load.
  *
  * During prerendering (build time) there is no real browser, so the service
- * reports 'light' and never touches the DOM.
+ * reports 'dark' (the default design) and never touches the DOM.
  */
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -62,7 +62,11 @@ export class ThemeService {
   }
 
   private resolveInitialTheme(): Theme {
-    return this.readStoredTheme() ?? (this.media?.matches ? 'dark' : 'light');
+    const stored = this.readStoredTheme();
+    if (stored) return stored;
+    // Dark-first design: dark unless the OS explicitly reports a light preference.
+    if (!this.media) return 'dark';
+    return this.media.matches ? 'dark' : 'light';
   }
 
   private readStoredTheme(): Theme | null {

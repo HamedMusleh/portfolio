@@ -5,81 +5,90 @@
   padding-block: var(--space-section);
 }
 
-.email-row {
+.content {
+  @include m.section-grid;
+  row-gap: var(--space-12);
+}
+
+.email-block {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-4) var(--space-6);
-  margin-bottom: var(--space-12);
+
+  @include m.up(lg) {
+    grid-column: 4 / -1;
+  }
+}
+
+.label {
+  @include m.mono-label;
+  flex-basis: 100%;
+  color: var(--muted);
 }
 
 .email {
   font-family: var(--font-display);
   // Sized so the full address fits on one line even at 375px.
-  font-size: clamp(1.25rem, 0.9rem + 2.4vw, 2.5rem);
+  font-size: clamp(1.375rem, 0.6rem + 4vw, 4rem);
   font-weight: 600;
-  letter-spacing: -0.02em;
+  line-height: 1;
+  letter-spacing: var(--tracking-display);
   text-decoration: underline;
-  text-decoration-color: var(--color-accent);
+  text-decoration-color: var(--accent);
   text-decoration-thickness: 2px;
-  text-underline-offset: 6px;
-  // Long addresses must wrap on a 375px screen instead of overflowing.
+  text-underline-offset: 0.18em;
+  // Safety net for very narrow screens: wrap rather than overflow.
   overflow-wrap: anywhere;
 
   &:hover {
-    color: var(--color-accent);
+    color: var(--accent);
   }
 }
 
 .copy {
-  min-width: 9.5rem; // stops the button resizing when the label changes
+  min-width: 10rem; // stops the button resizing when the label changes
 }
 
+// Link table: one hairline row per channel.
 .links {
-  display: grid;
-  gap: var(--space-4);
+  border-bottom: 1px solid var(--line);
   list-style: none;
 
-  @include m.up(md) {
-    grid-template-columns: repeat(3, 1fr);
+  @include m.up(lg) {
+    grid-column: 4 / -1;
   }
 
   a {
-    display: flex;
+    display: grid;
+    grid-template-columns: 6rem 1fr auto;
     align-items: center;
     gap: var(--space-4);
-    height: 100%;
-    padding: var(--space-4) var(--space-6);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-surface);
-    font-size: 1.5rem; // sizes the icon (1em)
+    min-height: 3.5rem;
+    border-top: 1px solid var(--line);
     text-decoration: none;
-    transition:
-      border-color 160ms var(--ease-out),
-      transform 160ms var(--ease-out);
 
     &:hover {
-      border-color: var(--color-accent);
-      transform: translateY(-2px);
+      color: var(--accent);
+    }
+
+    @include m.up(md) {
+      grid-template-columns: 10rem 1fr auto;
+      min-height: 4.5rem;
     }
   }
 }
 
-.link-text {
-  display: grid;
-  min-width: 0;
-}
-
 .link-label {
-  font-size: var(--text-base);
-  font-weight: 600;
+  @include m.mono-label;
+  color: var(--muted);
 }
 
 .link-value {
-  @include m.mono-label;
   overflow: hidden;
-  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

@@ -20,7 +20,14 @@
     <ul id="primary-nav" class="links" [class.open]="menuOpen()">
       @for (link of links; track link.id) {
         <li>
-          <a routerLink="/" [fragment]="link.id" (click)="closeMenu()">{{ link.label }}</a>
+          <a
+            routerLink="/"
+            [fragment]="link.id"
+            [attr.data-index]="link.index"
+            (click)="closeMenu()"
+          >
+            {{ link.label }}
+          </a>
         </li>
       }
     </ul>

@@ -7,25 +7,11 @@ import { SectionHeading } from '../../shared/section-heading';
   selector: 'app-skills',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [SectionHeading, RevealDirective],
+  templateUrl: './skills.html',
   styleUrl: './skills.scss',
-  template: `
-    <section id="skills" class="container" aria-labelledby="skills-title">
-      <app-section-heading index="04" title="Skills" headingId="skills-title" />
-      <div class="grid">
-        @for (group of skills; track group.category) {
-          <div class="group" appReveal>
-            <h3>{{ group.category }}</h3>
-            <ul>
-              @for (skill of group.skills; track skill) {
-                <li>{{ skill }}</li>
-              }
-            </ul>
-          </div>
-        }
-      </div>
-    </section>
-  `,
 })
 export class Skills {
   protected readonly skills = inject(PORTFOLIO_DATA).skills;
+  /** Every skill in one flat list, for the marquee strip. */
+  protected readonly allSkills = this.skills.flatMap((group) => group.skills);
 }

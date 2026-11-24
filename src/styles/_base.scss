@@ -10,7 +10,7 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   // Anchored sections stop below the sticky header instead of under it.
-  scroll-padding-top: calc(var(--header-height) + var(--space-4));
+  scroll-padding-top: calc(var(--header-height) + var(--space-6));
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -22,12 +22,24 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-body);
   font-size: var(--text-base);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+
+  // Film-grain noise over the whole page (an inline SVG turbulence filter).
+  // Fixed + pointer-events: none, so it costs nothing while scrolling.
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: var(--noise-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
 
 h1,
@@ -35,8 +47,9 @@ h2,
 h3 {
   margin: 0;
   font-family: var(--font-display);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: var(--tracking-display);
   text-wrap: balance;
 }
 
@@ -45,7 +58,8 @@ p {
   text-wrap: pretty;
 }
 
-ul {
+ul,
+ol {
   margin: 0;
   padding: 0;
 }
@@ -66,14 +80,14 @@ button {
 }
 
 // One consistent, highly visible focus style for every interactive element.
-// :focus-visible means mouse users don't see it, keyboard users always do.
+// :focus-visible means mouse users don't see it; keyboard users always do.
 :focus-visible {
   @include m.focus-ring;
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-on-accent);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 .container {
@@ -96,49 +110,45 @@ button {
   white-space: nowrap;
 }
 
-// Buttons are global because hero, contact and the 404 page all share them.
+// Buttons are global because hero, contact and the 404 page share them.
+// Sharp corners, mono uppercase labels, hairline border.
 .btn {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  min-height: 2.75rem; // 44px touch target
-  padding: var(--space-2) var(--space-6);
-  border: 1px solid var(--color-text);
-  border-radius: var(--radius-sm);
-  background: transparent;
-  font-weight: 600;
+  gap: var(--space-3);
+  min-height: 3rem;
+  padding: 0 var(--space-6);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  @include m.mono-label;
+  font-size: 0.8125rem;
   text-decoration: none;
   cursor: pointer;
   transition:
-    background-color 160ms var(--ease-out),
-    color 160ms var(--ease-out),
-    transform 160ms var(--ease-out);
+    color 220ms var(--ease-out),
+    border-color 220ms var(--ease-out);
 
   &:hover {
-    background: var(--color-text);
-    color: var(--color-bg);
-  }
-
-  &:active {
-    transform: translateY(1px);
+    border-color: var(--text);
   }
 
   &--primary {
-    border-color: var(--color-accent);
-    background: var(--color-accent);
-    color: var(--color-on-accent);
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
 
     &:hover {
-      border-color: var(--color-accent-strong);
-      background: var(--color-accent-strong);
-      color: var(--color-on-accent);
+      border-color: var(--text);
     }
   }
 
-  svg {
-    width: 1.125rem;
-    height: 1.125rem;
+  .icon {
+    font-size: 1rem;
   }
 }
 
@@ -149,7 +159,9 @@ button {
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
 

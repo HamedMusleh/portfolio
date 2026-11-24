@@ -1,37 +1,39 @@
 <article [attr.aria-labelledby]="titleId()">
-  <header>
+  <div class="head">
     <div class="meta">
       @if (project().featured) {
         <span class="badge">Featured</span>
       }
-      <span class="context">{{ project().context }}</span>
       @if (project().period; as period) {
-        <span class="period">{{ period }}</span>
+        <span class="period" [class.warn]="inProgress()">{{ period }}</span>
       }
     </div>
+    <p class="context">{{ project().context }}</p>
     <h3 [id]="titleId()">{{ project().title }}</h3>
-  </header>
+    <p class="summary">{{ project().summary }}</p>
+  </div>
 
-  <p class="summary">{{ project().summary }}</p>
-
-  <ul class="highlights">
-    @for (item of project().highlights; track $index) {
-      <li>{{ item }}</li>
-    }
-  </ul>
-
-  <footer>
-    <ul class="tech" aria-label="Technologies">
-      @for (tech of project().tech; track tech) {
-        <li>{{ tech }}</li>
+  <div class="body">
+    <ul class="highlights">
+      @for (item of project().highlights; track $index) {
+        <li>{{ item }}</li>
       }
     </ul>
-    @if (project().repoUrl; as repoUrl) {
-      <a class="repo" [href]="repoUrl" target="_blank" rel="noopener">
-        <app-icon name="github" />
-        Source code
-        <span class="visually-hidden">for {{ project().title }} (opens in a new tab)</span>
-      </a>
-    }
-  </footer>
+
+    <footer>
+      <ul class="tech" aria-label="Technologies">
+        @for (tech of project().tech; track tech) {
+          <li>{{ tech }}</li>
+        }
+      </ul>
+      @if (project().repoUrl; as repoUrl) {
+        <a class="repo" [href]="repoUrl" target="_blank" rel="noopener">
+          <app-icon name="github" />
+          Source code
+          <span class="visually-hidden">for {{ project().title }} (opens in a new tab)</span>
+          <app-icon name="external" />
+        </a>
+      }
+    </footer>
+  </div>
 </article>

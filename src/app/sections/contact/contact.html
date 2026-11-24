@@ -6,44 +6,41 @@
     intro="I'm looking for junior engineering roles. Email is the best way to reach me."
   />
 
-  <div class="email-row">
-    <a class="email" [href]="'mailto:' + profile.email">{{ profile.email }}</a>
-    <button type="button" class="btn copy" (click)="copyEmail()">
-      <app-icon [name]="copyState() === 'copied' ? 'check' : 'copy'" />
-      <!-- Text changes in place; aria-live makes screen readers announce it. -->
-      <span aria-live="polite">{{ copyLabel() }}</span>
-    </button>
-  </div>
+  <div class="content">
+    <div class="email-block">
+      <p class="label" aria-hidden="true">Primary channel</p>
+      <a class="email" [href]="'mailto:' + profile.email">{{ profile.email }}</a>
+      <button type="button" class="btn copy" (click)="copyEmail()">
+        <app-icon [name]="copyState() === 'copied' ? 'check' : 'copy'" />
+        <!-- Text changes in place; aria-live makes screen readers announce it. -->
+        <span aria-live="polite">{{ copyLabel() }}</span>
+      </button>
+    </div>
 
-  <ul class="links">
-    <li>
-      <a [href]="profile.github.url" target="_blank" rel="noopener me">
-        <app-icon name="github" />
-        <span class="link-text">
+    <ul class="links">
+      <li>
+        <a [href]="profile.github.url" target="_blank" rel="noopener me">
           <span class="link-label">GitHub</span>
           <span class="link-value">{{ profile.github.label }}</span>
-        </span>
-        <span class="visually-hidden">(opens in a new tab)</span>
-      </a>
-    </li>
-    <li>
-      <a [href]="profile.linkedin.url" target="_blank" rel="noopener me">
-        <app-icon name="linkedin" />
-        <span class="link-text">
+          <span class="visually-hidden">(opens in a new tab)</span>
+          <app-icon name="external" />
+        </a>
+      </li>
+      <li>
+        <a [href]="profile.linkedin.url" target="_blank" rel="noopener me">
           <span class="link-label">LinkedIn</span>
           <span class="link-value">{{ profile.linkedin.label }}</span>
-        </span>
-        <span class="visually-hidden">(opens in a new tab)</span>
-      </a>
-    </li>
-    <li>
-      <a [href]="profile.cvPath" download>
-        <app-icon name="download" />
-        <span class="link-text">
+          <span class="visually-hidden">(opens in a new tab)</span>
+          <app-icon name="external" />
+        </a>
+      </li>
+      <li>
+        <a [href]="profile.cvPath" download>
           <span class="link-label">CV</span>
           <span class="link-value">Download PDF</span>
-        </span>
-      </a>
-    </li>
-  </ul>
+          <app-icon name="download" />
+        </a>
+      </li>
+    </ul>
+  </div>
 </section>

@@ -10,7 +10,12 @@ import { SectionHeading } from '../../shared/section-heading';
   styleUrl: './experience.scss',
   template: `
     <section id="experience" class="container" aria-labelledby="experience-title">
-      <app-section-heading index="03" title="Experience & Training" headingId="experience-title" />
+      <app-section-heading
+        index="03"
+        label="Experience"
+        title="Experience & Training"
+        headingId="experience-title"
+      />
 
       <!-- An ordered list: the order (newest first) carries meaning. -->
       <ol class="timeline">
@@ -18,6 +23,7 @@ import { SectionHeading } from '../../shared/section-heading';
           <li class="entry" [class.experience]="entry.kind === 'experience'" appReveal>
             <p class="period">{{ entry.period }}</p>
             <div class="body">
+              <span class="node" aria-hidden="true"></span>
               <p class="kind">
                 {{ entry.kind === 'experience' ? 'Experience' : 'Certification' }}
               </p>

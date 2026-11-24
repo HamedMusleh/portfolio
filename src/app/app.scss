@@ -19,9 +19,11 @@ main {
   left: var(--space-2);
   z-index: 100;
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-sm);
-  background: var(--color-text);
-  color: var(--color-bg);
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
   font-weight: 600;
   transform: translateY(-200%);
 

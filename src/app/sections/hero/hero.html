@@ -1,8 +1,36 @@
 <section id="top" class="hero" aria-labelledby="hero-title">
+  <!-- Decorative dot grid behind the hero. -->
+  <div class="grid-bg" aria-hidden="true"></div>
+
   <div class="container layout">
+    <div class="meta">
+      <p class="status"><span class="led" aria-hidden="true"></span>{{ status }}</p>
+      <p class="coords">
+        <span aria-hidden="true">{{ coordinates }} ·</span> {{ profile.location }}
+      </p>
+    </div>
+
+    <h1 id="hero-title">
+      <!-- Screen readers get the plain name; the per-letter spans are for the animation. -->
+      <span class="visually-hidden">{{ profile.name }}</span>
+      <span class="name" aria-hidden="true">
+        @for (word of nameWords; track $index) {
+          <span class="word">
+            @for (letter of word; track letter.index) {
+              <span class="char-mask"
+                ><span class="char" [style.--i]="letter.index">{{ letter.char }}</span></span
+              >
+            }
+          </span>
+        }
+      </span>
+    </h1>
+
     <div class="intro">
-      <p class="eyebrow">{{ profile.title }}</p>
-      <h1 id="hero-title">{{ profile.name }}</h1>
+      <p class="title">
+        <span class="prompt" aria-hidden="true">&gt;</span>
+        <span class="typed" [style.--chars]="profile.title.length">{{ profile.title }}</span>
+      </p>
       <p class="pitch">{{ profile.pitch }}</p>
 
       <div class="actions">
@@ -18,8 +46,11 @@
       </div>
     </div>
 
-    <!-- A small "spec sheet": quick facts in a mono, engineering-notebook style. -->
-    <dl class="spec" aria-label="Quick facts">
+    <!-- Quick facts styled as an instrument readout. -->
+    <dl class="readout" aria-label="Quick facts">
+      <div class="readout-head" aria-hidden="true">
+        <span>SYS.INFO</span><span class="readout-led"></span>
+      </div>
       <div class="row">
         <dt>Based in</dt>
         <dd>{{ profile.location }}</dd>
@@ -35,5 +66,10 @@
         </div>
       }
     </dl>
+  </div>
+
+  <!-- Measurement ruler along the bottom edge. -->
+  <div class="container ruler" aria-hidden="true">
+    <span>000</span><span class="ticks"></span><span>Scroll</span>
   </div>
 </section>

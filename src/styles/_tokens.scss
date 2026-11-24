@@ -1,54 +1,63 @@
-// Design tokens exposed as CSS custom properties.
-// Colours are swapped per theme; everything else (spacing, type, radii) is shared.
-// Contrast notes (WCAG AA, 4.5:1 for body text): every text/background pair below
-// was checked; the lowest is --color-accent on --color-bg in light mode (~5:1).
-
-@mixin light-theme {
-  color-scheme: light;
-  --color-bg: #f7f5f0;
-  --color-surface: #ffffff;
-  --color-surface-2: #efece4;
-  --color-text: #1b1b18;
-  --color-text-muted: #55554d;
-  --color-border: #d9d5c9;
-  --color-grid: rgb(27 27 24 / 6%);
-  --color-accent: #b93c0a;
-  --color-accent-strong: #9a3208;
-  --color-on-accent: #ffffff;
-  --color-accent-soft: rgb(185 60 10 / 10%);
-  --shadow-card: 0 1px 2px rgb(27 27 24 / 6%), 0 8px 24px -12px rgb(27 27 24 / 18%);
-}
+// Design tokens: "Signal / Lab instrument".
+// Dark is the default theme; light is an override.
+//
+// Contrast (WCAG AA needs 4.5:1 for body text). Every text colour below was
+// checked against --bg, --surface and --surface-2:
+//   dark:  lowest pair is --muted on --surface-2 (5.3:1)
+//   light: the brief's #00A86B / #2F6BEF / #B7791F failed (2.6–4.3:1), so they
+//          were darkened to the same hues: accent #007A4D (≥4.6:1),
+//          accent-2 #1F5AD8 (≥5.1:1), warn #8A5A0E (≥5.0:1).
 
 @mixin dark-theme {
   color-scheme: dark;
-  --color-bg: #121311;
-  --color-surface: #1a1b19;
-  --color-surface-2: #22231f;
-  --color-text: #ecebe6;
-  --color-text-muted: #a6a59c;
-  --color-border: #34352f;
-  --color-grid: rgb(236 235 230 / 5%);
-  --color-accent: #fb923c;
-  --color-accent-strong: #fdba74;
-  --color-on-accent: #121311;
-  --color-accent-soft: rgb(251 146 60 / 12%);
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 60%);
+  --bg: #07090c;
+  --surface: #0e1217;
+  --surface-2: #151b23;
+  --line: #222b36;
+  --text: #e8eef4;
+  --muted: #8592a3;
+  --accent: #3df5a7;
+  --accent-2: #4c8dff;
+  --warn: #ffc857;
+  --on-accent: #07090c;
+  --accent-soft: rgb(61 245 167 / 10%);
+  --dot: rgb(232 238 244 / 14%);
+  --noise-opacity: 0.05;
+}
+
+@mixin light-theme {
+  color-scheme: light;
+  --bg: #f3f5f7;
+  --surface: #ffffff;
+  --surface-2: #e9edf1;
+  --line: #d3dae2;
+  --text: #0a0e13;
+  --muted: #556170;
+  --accent: #007a4d;
+  --accent-2: #1f5ad8;
+  --warn: #8a5a0e;
+  --on-accent: #ffffff;
+  --accent-soft: rgb(0 122 77 / 9%);
+  --dot: rgb(10 14 19 / 16%);
+  --noise-opacity: 0.035;
 }
 
 :root {
-  @include light-theme;
+  @include dark-theme;
 
-  --font-display: 'Space Grotesk Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-body: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', sans-serif;
+  --font-body: 'Geist', 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Menlo, monospace;
 
-  // Fluid type scale: grows smoothly between 375px and 1280px viewports.
+  // Fluid type scale (smoothly interpolates between small and large screens).
+  --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
-  --text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
-  --text-2xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
-  --text-hero: clamp(2.5rem, 1.6rem + 4.4vw, 5rem);
+  --text-xl: clamp(1.375rem, 1.15rem + 1vw, 2rem);
+  --text-2xl: clamp(2.25rem, 1.5rem + 3.4vw, 4.5rem);
+  --text-hero: clamp(3rem, 9vw, 7.5rem);
+  --tracking-display: -0.03em;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -58,23 +67,25 @@
   --space-8: 2rem;
   --space-12: 3rem;
   --space-16: 4rem;
-  --space-section: clamp(4rem, 3rem + 5vw, 7.5rem);
+  --space-section: clamp(5rem, 3.5rem + 5vw, 8rem);
 
-  --radius-sm: 4px;
-  --radius-md: 10px;
-  --container: 72rem;
-  --header-height: 4rem;
-  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  // Sharp, instrument-like shapes.
+  --radius: 2px;
+  --radius-lg: 4px;
+
+  --container: 80rem;
+  --header-height: 3.75rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-// Explicit choice made with the toggle (or restored from localStorage).
-:root[data-theme='dark'] {
-  @include dark-theme;
+// Explicit choice from the toggle (or restored from localStorage).
+:root[data-theme='light'] {
+  @include light-theme;
 }
 
-// Fallback when JavaScript is off: follow the OS setting.
-@media (prefers-color-scheme: dark) {
+// No JavaScript: follow the OS only if it explicitly asks for light.
+@media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
-    @include dark-theme;
+    @include light-theme;
   }
 }

@@ -1,0 +1,35 @@
+<section id="skills" aria-labelledby="skills-title">
+  <div class="container">
+    <app-section-heading index="04" title="Skills" headingId="skills-title" />
+  </div>
+
+  <!-- Decorative strip (the accessible version is the table below). -->
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      @for (copy of [0, 1]; track copy) {
+        <ul>
+          @for (skill of allSkills; track $index) {
+            <li>{{ skill }}</li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+
+  <div class="container">
+    <dl class="sheet">
+      @for (group of skills; track group.category) {
+        <div class="row" appReveal>
+          <dt>{{ group.category }}</dt>
+          <dd>
+            <ul>
+              @for (skill of group.skills; track skill) {
+                <li>{{ skill }}</li>
+              }
+            </ul>
+          </dd>
+        </div>
+      }
+    </dl>
+  </div>
+</section>

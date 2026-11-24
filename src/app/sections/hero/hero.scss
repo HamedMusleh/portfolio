@@ -6,68 +6,128 @@
 
 .hero {
   position: relative;
-  isolation: isolate; // keeps the z-index:-1 grid inside this section
-  padding-block: var(--space-16) 0;
+  isolation: isolate; // keeps the z-index:-1 background inside this section
+  padding-top: clamp(var(--space-12), 8vw, 7rem);
   overflow: hidden;
-
-  // Blueprint grid, faded out towards the bottom. Purely decorative CSS.
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background-image:
-      linear-gradient(var(--color-grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
-    background-size: 32px 32px;
-    mask-image: linear-gradient(to bottom, #000 40%, transparent);
-  }
-
-  @include m.up(md) {
-    padding-top: calc(var(--space-16) * 2);
-  }
 }
 
+// ---- Background: dot grid, fading out towards the bottom -------------------
+.grid-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, #000 30%, transparent 95%);
+}
+
+// ---- Layout ----------------------------------------------------------------
 .layout {
-  display: grid;
-  gap: var(--space-12);
+  @include m.section-grid;
+  row-gap: var(--space-8);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--line);
+  @include m.mono-label;
 
   @include m.up(lg) {
-    grid-template-columns: 1fr minmax(18rem, 22rem);
-    align-items: end;
+    grid-column: 1 / -1;
   }
 }
 
-.eyebrow {
-  @include m.mono-label;
+.status {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  margin-bottom: var(--space-4);
-  color: var(--color-accent);
-
-  &::before {
-    content: '';
-    width: 1.5rem;
-    height: 1px;
-    background: currentColor;
-  }
+  color: var(--accent);
 }
 
+.led {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.coords {
+  color: var(--muted);
+}
+
+// ---- Name ------------------------------------------------------------------
 h1 {
   font-size: var(--text-hero);
   font-weight: 700;
-  letter-spacing: -0.04em;
-  animation: rise 700ms var(--ease-out) both;
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+
+  @include m.up(lg) {
+    grid-column: 1 / -1;
+  }
+}
+
+.name {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.22em;
+}
+
+.word {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+// Each letter sits in its own clipping box so it can slide up from below.
+.char-mask {
+  display: inline-block;
+  overflow: hidden;
+  // Extra room so descenders/overshoot aren't clipped.
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.char {
+  display: inline-block;
+}
+
+// ---- Intro column ----------------------------------------------------------
+.intro {
+  @include m.up(lg) {
+    grid-column: 1 / span 7;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: clamp(0.875rem, 0.8rem + 0.4vw, 1.0625rem);
+  letter-spacing: 0; // the typing effect relies on 1ch == 1 character
+  color: var(--accent);
+}
+
+.prompt {
+  color: var(--muted);
+}
+
+.typed {
+  position: relative;
+  white-space: nowrap;
 }
 
 .pitch {
-  max-width: 38ch;
+  max-width: 34ch;
   margin-top: var(--space-6);
-  color: var(--color-text-muted);
   font-size: var(--text-xl);
-  line-height: 1.4;
-  animation: rise 700ms 80ms var(--ease-out) both;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
 }
 
 .actions {
@@ -75,44 +135,82 @@ h1 {
   flex-wrap: wrap;
   gap: var(--space-3);
   margin-top: var(--space-8);
-  animation: rise 700ms 160ms var(--ease-out) both;
 }
 
-.spec {
+// ---- Readout panel ---------------------------------------------------------
+.readout {
+  position: relative;
+  align-self: end;
   margin: 0;
-  padding: var(--space-4) var(--space-6);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-card);
+  border: 1px solid var(--line);
+  background: var(--surface);
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
+  @include m.crop-marks;
+
+  @include m.up(lg) {
+    grid-column: 9 / -1;
+  }
+}
+
+.readout-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+.readout-led {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
 }
 
 .row {
   display: grid;
-  grid-template-columns: 6rem 1fr;
+  grid-template-columns: 5.5rem 1fr;
   gap: var(--space-3);
-  padding-block: var(--space-3);
+  padding: var(--space-3) var(--space-4);
 
   & + & {
-    border-top: 1px dashed var(--color-border);
+    border-top: 1px dashed var(--line);
   }
 }
 
 dt {
-  color: var(--color-text-muted);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 dd {
   margin: 0;
+  line-height: 1.5;
 }
 
-// Transform-only entrance: cheap, no layout shift, and the text is never
-// invisible (fading from opacity 0 would delay Largest Contentful Paint).
-// The global reduced-motion rule shortens this to ~0ms.
-@keyframes rise {
-  from {
-    transform: translateY(12px);
-  }
+// ---- Ruler -----------------------------------------------------------------
+.ruler {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
+  padding-bottom: var(--space-4);
+  color: var(--muted);
+  @include m.mono-label;
+  font-size: 0.6875rem;
+}
+
+.ticks {
+  flex: 1;
+  height: 8px;
+  border-bottom: 1px solid var(--line);
+  // Minor tick every 8px, major tick every 64px.
+  background:
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 64px) bottom / 100% 8px
+      no-repeat,
+    repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px 8px) bottom / 100% 4px
+      no-repeat;
 }

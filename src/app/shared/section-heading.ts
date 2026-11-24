@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 /**
- * Consistent heading for every section: a mono index ("01") + the title.
+ * Consistent heading for every section: a mono label ("01 / ABOUT") in the left
+ * column and the large display title to its right (asymmetric 12-column grid).
  * `headingId` is referenced by the parent <section aria-labelledby="…">,
  * so screen readers announce each landmark by its visible title.
  */
@@ -10,13 +11,15 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrl: './section-heading.scss',
   template: `
-    <div class="heading">
-      <span class="index" aria-hidden="true">{{ index() }}</span>
+    <p class="label" aria-hidden="true">
+      <span class="index">{{ index() }}</span> / {{ label() ?? title() }}
+    </p>
+    <div class="main">
       <h2 [id]="headingId()">{{ title() }}</h2>
+      @if (intro(); as intro) {
+        <p class="intro">{{ intro }}</p>
+      }
     </div>
-    @if (intro(); as intro) {
-      <p class="intro">{{ intro }}</p>
-    }
   `,
 })
 export class SectionHeading {
@@ -24,4 +27,6 @@ export class SectionHeading {
   readonly title = input.required<string>();
   readonly headingId = input.required<string>();
   readonly intro = input<string>();
+  /** Short mono label; defaults to the title. */
+  readonly label = input<string>();
 }

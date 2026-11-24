@@ -1,10 +1,10 @@
 @use 'sass:map';
 
 // Mobile-first breakpoints: styles are written for small screens and enhanced upward.
+// md = 768px, lg = 1024px.
 $breakpoints: (
   md: 48rem,
-  // 768px
-  lg: 64rem, // 1024px
+  lg: 64rem,
 );
 
 @mixin up($name) {
@@ -13,14 +13,63 @@ $breakpoints: (
   }
 }
 
+/// Only for devices with a precise pointer that can hover (mouse/trackpad).
+/// Cursor-driven effects are wrapped in this so touch devices stay static.
+@mixin fine-pointer {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+@mixin motion-ok {
+  @media (prefers-reduced-motion: no-preference) {
+    @content;
+  }
+}
+
 @mixin focus-ring {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-// Monospace "label" style used for dates, tags and eyebrows.
+/// Uppercase mono label used for indices, dates, tags and status text.
 @mixin mono-label {
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  letter-spacing: 0.02em;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/// Printer's crop marks on the four corners of a box (drawn with gradients on
+/// ::after, so no extra markup). The host must be position: relative.
+@mixin crop-marks($size: 10px, $offset: -5px) {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: $offset;
+    pointer-events: none;
+    --c: var(--crop-color, var(--muted));
+    background:
+      linear-gradient(var(--c), var(--c)) top left / #{$size} 1px,
+      linear-gradient(var(--c), var(--c)) top left / 1px #{$size},
+      linear-gradient(var(--c), var(--c)) top right / #{$size} 1px,
+      linear-gradient(var(--c), var(--c)) top right / 1px #{$size},
+      linear-gradient(var(--c), var(--c)) bottom left / #{$size} 1px,
+      linear-gradient(var(--c), var(--c)) bottom left / 1px #{$size},
+      linear-gradient(var(--c), var(--c)) bottom right / #{$size} 1px,
+      linear-gradient(var(--c), var(--c)) bottom right / 1px #{$size};
+    background-repeat: no-repeat;
+  }
+}
+
+/// 12-column grid used by section layouts on large screens.
+@mixin section-grid {
+  display: grid;
+  gap: var(--space-8);
+
+  @include up(lg) {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--space-6);
+  }
 }
